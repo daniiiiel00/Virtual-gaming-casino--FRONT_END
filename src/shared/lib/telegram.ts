@@ -3,6 +3,8 @@ declare global {
     Telegram?: {
       WebApp?: {
         initData: string;
+        expand: () => void;
+        ready: () => void;
       };
     };
   }
