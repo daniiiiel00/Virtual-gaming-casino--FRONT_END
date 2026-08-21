@@ -6,3 +6,4 @@ export * from './Modal';
 export * from './EmptyState';
 export * from './ErrorState';
 export * from './BalanceFigure';
+export * from './LanguageSwitcher';

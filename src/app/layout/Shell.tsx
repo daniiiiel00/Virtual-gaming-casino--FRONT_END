@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Home, Gamepad2, Gift, History, User } from 'lucide-react';
+import { Home, Gamepad2, ChartColumnIncreasing, History, User } from 'lucide-react';
 import { cn } from '../../shared/components/Button';
 import { SplashScreen } from './SplashScreen';
 
 const navItems = [
  
   { path: '/games', label: 'Games', icon: Gamepad2 },
-  { path: '/promotions', label: 'Promos', icon: Gift },
+  { path: '/promotions', label: 'Leaderboard', icon: ChartColumnIncreasing },
    { path: '/', label: 'Home', icon: Home },
   { path: '/history', label: 'History', icon: History },
   { path: '/profile', label: 'Profile', icon: User },

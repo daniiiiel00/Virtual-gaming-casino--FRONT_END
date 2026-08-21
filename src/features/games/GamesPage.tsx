@@ -49,7 +49,7 @@ export default function GamesPage() {
   }, [games, searchQuery, activeCategory]);
 
   return (
-    <div className="flex flex-col h-full min-h-screen bg-background pb-24">
+    <div className="flex flex-col h-full min-h-screen bg-background pb-6">
       {/* Sticky Header with Search & Filters */}
       <div className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl border-b border-ink/5 pt-4 pb-2 px-4 space-y-4">
         <header className="flex justify-between items-end">

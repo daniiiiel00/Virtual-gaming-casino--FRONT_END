@@ -22,6 +22,7 @@ async function fetchHistory(): Promise<Transaction[]> {
         { id: 3, type: 'deposit', amount: '2000.00', created_at: new Date(Date.now() - 7200000).toISOString(), details: 'CBE Bank' },
         { id: 4, type: 'cashback', amount: '150.00', created_at: new Date(Date.now() - 86400000).toISOString(), details: 'Weekly VIP Bonus' },
         { id: 5, type: 'withdrawal', amount: '500.00', created_at: new Date(Date.now() - 172800000).toISOString(), details: 'Telebirr' },
+         { id: 6, type: 'withdrawal', amount: '500.00', created_at: new Date(Date.now() - 172800000).toISOString(), details: 'Telebirr' },
       ]);
     }, 600);
   });
@@ -52,7 +53,7 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="p-4 space-y-6 pb-24 relative overflow-hidden">
+    <div className="p-4 space-y-6 pb-6 relative overflow-hidden">
       {/* Ambient background styling */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-emerald/5 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -90,7 +91,7 @@ export default function HistoryPage() {
       <section className="relative z-10">
         {isLoading ? (
           <div className="space-y-3">
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <Skeleton key={i} className="h-16 w-full rounded-2xl" />
             ))}
           </div>

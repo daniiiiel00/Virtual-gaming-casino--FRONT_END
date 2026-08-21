@@ -1,5 +1,5 @@
-// Removed React
-import { Gift, Trophy, Crown, Star, Medal } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Trophy, Crown, Star, Medal, Clock, Swords, Ticket } from 'lucide-react';
 import { Button, Input, Card, cn } from '../../shared/components';
 
 // Mock Leaderboard Data
@@ -16,21 +16,83 @@ const leaderboard = [
 ];
 
 export default function PromotionsPage() {
-  const top3 = [leaderboard[1], leaderboard[0], leaderboard[2]]; // 2nd, 1st, 3rd for UI arrangement
+  const top3 = [leaderboard[1], leaderboard[0], leaderboard[2]];
   const rest = leaderboard.slice(3);
 
+  // Tournament Reset Countdown Timer
+  const [timeLeft, setTimeLeft] = useState({ h: 23, m: 59, s: 59 });
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        let { h, m, s } = prev;
+        if (s > 0) s--;
+        else { s = 59; if (m > 0) m--; else { m = 59; if (h > 0) h--; } }
+        return { h, m, s };
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="p-4 space-y-8 pb-24">
-      <header>
-        <h1 className="text-2xl font-display font-medium text-ink mb-1">Promotions & Rewards</h1>
-        <p className="text-sm text-ink-muted">Climb the leaderboard and claim your prizes.</p>
-      </header>
+    <div className="p-4 space-y-8 pb-6">
+      
+      {/* Daily Tournament Hero Card */}
+      <section className="relative">
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[120%] h-40 bg-gold/20 blur-[60px] pointer-events-none rounded-full"></div>
+        
+        <Card className="relative p-1 overflow-hidden bg-gradient-to-br from-[#1E1E1E] via-[#121212] to-[#0A0A0A] border border-gold/30 shadow-[0_15px_40px_rgba(232,169,59,0.2)] rounded-3xl">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+          
+          <div className="bg-surface/80 backdrop-blur-xl rounded-[1.35rem] p-5 relative z-10 border border-white/5">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Swords className="w-5 h-5 text-gold" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-gold">Live Event</span>
+                </div>
+                <h1 className="text-2xl font-display font-bold text-white drop-shadow-md">Daily Tournament</h1>
+              </div>
+              
+              {/* Prize Pool Badge */}
+              <div className="bg-gradient-to-r from-gold to-amber-500 rounded-xl p-[1px] shadow-lg">
+                <div className="bg-background/90 backdrop-blur-md rounded-[11px] px-3 py-1.5 flex flex-col items-center">
+                  <span className="text-[9px] font-bold uppercase text-ink-muted">Prize Pool</span>
+                  <span className="text-sm font-bold text-gold drop-shadow-sm">100,000 ETB</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Countdown Timer */}
+            <div className="bg-background/50 rounded-xl p-3 border border-white/5 flex justify-between items-center mt-6">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-surface-raised flex items-center justify-center border border-white/10 shadow-inner">
+                  <Clock className="w-4 h-4 text-ink-muted" />
+                </div>
+                <span className="text-xs font-medium text-ink-muted">Ends in:</span>
+              </div>
+              
+              <div className="font-mono text-xl font-bold text-white tracking-wider flex items-center gap-1 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                <span>{String(timeLeft.h).padStart(2, '0')}</span><span className="text-white/30 text-sm pb-1">h</span>
+                <span className="text-white/50 px-0.5">:</span>
+                <span>{String(timeLeft.m).padStart(2, '0')}</span><span className="text-white/30 text-sm pb-1">m</span>
+                <span className="text-white/50 px-0.5">:</span>
+                <span className="text-gold animate-pulse">{String(timeLeft.s).padStart(2, '0')}</span><span className="text-gold/50 text-sm pb-1">s</span>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </section>
 
       {/* Leaderboard UI */}
       <section>
-        <div className="flex items-center gap-2 mb-10">
-          <Trophy className="w-5 h-5 text-gold" />
-          <h2 className="text-lg font-display font-medium text-ink">Weekly Top Winners</h2>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-2">
+            <Trophy className="w-5 h-5 text-gold animate-pulse" />
+            <h2 className="text-lg font-display font-bold text-ink drop-shadow-sm">Global Rankings</h2>
+          </div>
+          <button className="bg-surface-raised border border-white/10 text-ink text-xs font-bold px-3 py-1.5 rounded-full shadow-sm hover:bg-white/5 transition-colors">
+            Your Rank: 142
+          </button>
         </div>
 
         {/* Top 3 Podium */}
@@ -113,23 +175,23 @@ export default function PromotionsPage() {
           ))}
         </div>
       </section>
-
-      {/* Existing Coupon UI */}
-      <Card className="p-5 border-bonus-amber/20 bg-gradient-to-br from-surface to-surface-raised mt-8">
-        <h3 className="text-sm font-medium text-bonus-amber mb-2 flex items-center gap-2">
-          <Gift className="w-4 h-4" />
-          Redeem Coupon
-        </h3>
-        <p className="text-xs text-ink-muted mb-4">
-          Got a promo code? Enter it below to claim your bonus funds.
-        </p>
-        <div className="flex gap-2">
-          <Input placeholder="e.g. WELCOME50" className="flex-1" />
-          <Button className="shrink-0 bg-bonus-amber text-background hover:bg-bonus-amber/90">
-            Redeem
+      
+      {/* Promo Code Floating Input */}
+      <section className="pt-4">
+        <div className="bg-gradient-to-r from-surface-raised to-surface rounded-2xl p-1 shadow-lg border border-white/5 flex items-center">
+          <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center shrink-0 ml-1">
+            <Ticket className="w-5 h-5 text-gold" />
+          </div>
+          <Input 
+            placeholder="Enter promo code" 
+            className="flex-1 bg-transparent border-0 focus-visible:ring-0 text-sm h-full mx-2 text-white placeholder:text-ink-muted uppercase font-bold" 
+          />
+          <Button className="shrink-0 rounded-xl bg-gold text-background font-bold shadow-[0_0_15px_rgba(232,169,59,0.5)] px-6">
+            Apply
           </Button>
         </div>
-      </Card>
+      </section>
+
     </div>
   );
 }
