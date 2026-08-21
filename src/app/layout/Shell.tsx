@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, Gamepad2, Gift, History, User } from 'lucide-react';
 import { cn } from '../../shared/components/Button';
 import { SplashScreen } from './SplashScreen';
 
 const navItems = [
-  { path: '/', label: 'Home', icon: Home },
+ 
   { path: '/games', label: 'Games', icon: Gamepad2 },
   { path: '/promotions', label: 'Promos', icon: Gift },
+   { path: '/', label: 'Home', icon: Home },
   { path: '/history', label: 'History', icon: History },
   { path: '/profile', label: 'Profile', icon: User },
 ];
 
 export function Shell() {
   const [showSplash, setShowSplash] = useState(true);
-
+  const location = useLocation();
+  
   // Initialize Telegram WebApp on mount
   useEffect(() => {
     if (window.Telegram?.WebApp) {
@@ -22,6 +24,10 @@ export function Shell() {
       window.Telegram.WebApp.ready();
     }
   }, []);
+
+  // Determine active index for the sliding curve animation
+  const activeIndex = navItems.findIndex(item => item.path === location.pathname);
+  const currentActive = activeIndex >= 0 ? activeIndex : 0;
 
   return (
     <>
@@ -31,57 +37,55 @@ export function Shell() {
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent opacity-50 z-50"></div>
         
         {/* Main Content Area - Padding bottom accounts for tab bar + safe area */}
-        <main className="flex-1 overflow-y-auto pb-[calc(4rem+env(safe-area-inset-bottom))] scrollbar-hide overscroll-y-contain">
+        <main className="flex-1 overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))] scrollbar-hide overscroll-y-contain relative z-0">
           <Outlet />
         </main>
 
-        {/* Ultra Elegant Floating Navigation Bar */}
-        <div className="absolute bottom-0 left-0 right-0 z-50 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-10 bg-gradient-to-t from-background via-background/95 to-transparent pointer-events-none">
-          <nav className="flex justify-between items-center bg-surface/70 backdrop-blur-2xl border border-white/10 rounded-[2rem] px-2 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] pointer-events-auto relative overflow-hidden">
-            {/* Inner subtle glow */}
-            <div className="absolute inset-0 bg-gradient-to-r from-gold/5 via-transparent to-gold/5 pointer-events-none"></div>
+        {/* Curved Animated Bottom Navigation */}
+        <div className="absolute bottom-0 left-0 right-0 z-50 bg-surface rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+          <div className="relative flex justify-between items-center h-16 px-2 pb-[env(safe-area-inset-bottom)]">
             
-            {navItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={({ isActive }) => cn(
-                  "flex flex-col items-center justify-center w-[18%] h-14 rounded-2xl transition-all duration-500 relative group z-10",
-                  isActive ? "text-gold" : "text-ink-muted hover:text-ink active:scale-90"
-                )}
-              >
-                {({ isActive }) => (
-                  <>
-                    {/* Active Background Pill */}
-                    <div className={cn(
-                      "absolute inset-0 rounded-2xl transition-all duration-500",
-                      isActive ? "bg-gold/15 shadow-inner scale-100 opacity-100" : "scale-50 opacity-0 group-hover:bg-white/5 group-hover:scale-100 group-hover:opacity-100"
-                    )}></div>
-                    
-                    {/* Icon Container with Floating Animation */}
-                    <div className={cn(
-                      "relative transition-all duration-500 ease-out flex items-center justify-center",
-                      isActive ? "-translate-y-3" : "translate-y-0 group-hover:-translate-y-1"
-                    )}>
-                      <item.icon className={cn(
-                        "w-5 h-5 transition-all duration-500",
-                        isActive ? "drop-shadow-[0_0_8px_rgba(232,169,59,0.8)]" : ""
-                      )} />
-                    </div>
+            {/* The sliding curved indicator background */}
+            <div 
+              className="absolute top-0 left-0 w-16 h-16 transition-all duration-500 pointer-events-none"
+              style={{
+                left: `calc(${currentActive * 20}% + 10% - 32px)`,
+              }}
+            >
+              {/* This creates the curve effect by matching the background color and creating a dip */}
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-16 h-16 bg-background rounded-full border-[6px] border-surface shadow-inner"></div>
+            </div>
 
-                    {/* Active Label & Dot Indicator */}
-                    <div className={cn(
-                      "absolute bottom-2 flex flex-col items-center transition-all duration-500",
-                      isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                    )}>
-                      <span className="text-[9px] font-bold tracking-widest uppercase mb-0.5">{item.label}</span>
-                      <div className="w-1 h-1 rounded-full bg-gold shadow-[0_0_5px_rgba(232,169,59,1)]"></div>
-                    </div>
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
+            {/* Navigation Items */}
+            {navItems.map((item, index) => {
+              const isActive = index === currentActive;
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className="flex flex-col items-center justify-center w-[20%] h-full relative z-10"
+                >
+                  <div className={cn(
+                    "flex items-center justify-center transition-all duration-500 rounded-full",
+                    isActive 
+                      ? "w-12 h-12 bg-gold text-background -translate-y-6 shadow-[0_4px_15px_rgba(232,169,59,0.5)]" 
+                      : "w-8 h-8 bg-transparent text-ink-muted hover:text-ink translate-y-0"
+                  )}>
+                    <item.icon className={cn(
+                      "transition-all duration-500",
+                      isActive ? "w-6 h-6" : "w-5 h-5"
+                    )} />
+                  </div>
+                  <span className={cn(
+                    "absolute bottom-2 text-[10px] font-bold tracking-widest transition-all duration-500",
+                    isActive ? "opacity-100 text-gold translate-y-0" : "opacity-0 translate-y-4"
+                  )}>
+                    {item.label}
+                  </span>
+                </NavLink>
+              );
+            })}
+          </div>
         </div>
       </div>
     </>
