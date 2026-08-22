@@ -1,9 +1,6 @@
 {
   "name": "@gaming-platform/monorepo",
   "private": true,
-  "workspaces": [
-    "apps/*"
-  ],
   "scripts": {
     "dev": "pnpm --filter @gaming-platform/user-app dev",
     "dev:user": "pnpm --filter @gaming-platform/user-app dev",
