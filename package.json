@@ -7,6 +7,7 @@
   "scripts": {
     "dev:user": "npm run dev --workspace=@gaming-platform/user-app",
     "build:user": "npm run build --workspace=@gaming-platform/user-app",
+    "build": "npm run build:user && cp -r apps/user-app/dist dist",
     "lint": "npm run lint --workspaces"
   }
 }
