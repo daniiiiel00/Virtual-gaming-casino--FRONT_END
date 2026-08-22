@@ -74,8 +74,8 @@ export function SplashScreen({ onFinish }: { onFinish: () => void }) {
         })}
       </div>
 
-      {/* Center UI with Glassmorphism */}
-      <div className="relative z-10 flex flex-col items-center p-10 bg-background/40 backdrop-blur-md rounded-3xl border border-gold/30 shadow-[0_0_50px_rgba(232,169,59,0.2)]">
+      {/* Center UI without Card */}
+      <div className="relative z-10 flex flex-col items-center">
         
         {/* Animated logo wrapper */}
         <div className="relative group mb-6">
