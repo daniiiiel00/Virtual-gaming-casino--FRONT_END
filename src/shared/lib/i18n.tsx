@@ -25,7 +25,7 @@ const translations: Translations = {
     // Wallet
     totalBalance: "Total Balance",
     trendingNow: "Trending Now",
-    multiHotSlots: "Multi Hot Slots 🎰",
+    multiHotSlots: "Multi Hot Slots",
     allGames: "All Games",
     exploreLibrary: "Explore our entire library",
     loadMore: "Load More Games",
@@ -36,6 +36,25 @@ const translations: Translations = {
     apply: "GO",
     seeAll: "See All",
     more: "More",
+    
+    // Bottom Nav & Page Titles
+    navHome: "Home",
+    navGames: "Games",
+    navLeaderboard: "Leaderboard",
+    navHistory: "History",
+    navProfile: "Profile",
+    
+    // Games Page
+    gamesTitle: "All Games",
+    gamesDesc: "Find your favorite games",
+    
+    // History Page
+    historyTitle: "Transaction History",
+    historyDesc: "Your recent deposits, withdrawals and bets",
+    
+    // Leaderboard/Promotions Page
+    leaderboardTitle: "Leaderboard",
+    leaderboardDesc: "Top players and active promotions",
   },
   am: {
     // Shared
@@ -53,7 +72,7 @@ const translations: Translations = {
     // Wallet
     totalBalance: "ጠቅላላ ቀሪ ሂሳብ",
     trendingNow: "አሁን ታዋቂ",
-    multiHotSlots: "የተለያዩ ትኩስ ቦታዎች 🎰",
+    multiHotSlots: "የተለያዩ ትኩስ ቦታዎች ",
     allGames: "ሁሉም ጨዋታዎች",
     exploreLibrary: "አጠቃላይ ቤተ-መጽሐፍታችንን ያስሱ",
     loadMore: "ተጨማሪ ጨዋታዎችን ጫን",
@@ -64,6 +83,25 @@ const translations: Translations = {
     apply: "አስገባ",
     seeAll: "ሁሉንም እይ",
     more: "ተጨማሪ",
+    
+    // Bottom Nav & Page Titles
+    navHome: "መነሻ",
+    navGames: "ጨዋታዎች",
+    navLeaderboard: "ደረጃዎች",
+    navHistory: "ታሪክ",
+    navProfile: "ፕሮፋይል",
+    
+    // Games Page
+    gamesTitle: "ሁሉም ጨዋታዎች",
+    gamesDesc: "የሚወዷቸውን ጨዋታዎች ያግኙ",
+    
+    // History Page
+    historyTitle: "የግብይት ታሪክ",
+    historyDesc: "የቅርብ ጊዜ ዴፖዚቶች፣ ወጪዎች እና ውርርዶች",
+    
+    // Leaderboard/Promotions Page
+    leaderboardTitle: "የደረጃ ሰሌዳ",
+    leaderboardDesc: "ከፍተኛ ተጫዋቾች እና ንቁ ማስተዋወቂያዎች",
   }
 };
 
@@ -76,10 +114,17 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Language>('en');
+  const [lang, setLang] = useState<Language>(() => {
+    const savedLang = localStorage.getItem('ahadu_language');
+    return (savedLang === 'en' || savedLang === 'am') ? (savedLang as Language) : 'en';
+  });
 
   const toggleLang = () => {
-    setLang(prev => prev === 'en' ? 'am' : 'en');
+    setLang(prev => {
+      const newLang = prev === 'en' ? 'am' : 'en';
+      localStorage.setItem('ahadu_language', newLang);
+      return newLang;
+    });
   };
 
   const t = (key: string) => {

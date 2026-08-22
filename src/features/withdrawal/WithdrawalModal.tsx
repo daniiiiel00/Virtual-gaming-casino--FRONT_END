@@ -53,7 +53,7 @@ export function WithdrawalModal({ isOpen, onClose, cashBalance }: WithdrawalModa
       });
     },
     onSuccess: () => {
-      toast.success('Withdrawal request sent to admin! 💸', { duration: 4000 });
+      toast.success('Withdrawal request sent to admin!', { duration: 4000 });
       queryClient.invalidateQueries({ queryKey: ['wallet'] });
       reset();
       onClose();
@@ -150,11 +150,10 @@ export function WithdrawalModal({ isOpen, onClose, cashBalance }: WithdrawalModa
           <div className="relative">
             <Input 
               type="number"
-              placeholder="0.00" 
+              placeholder="0.00 ETB" 
               {...register('amount')} 
               className="pl-6 text-xl font-display font-bold h-14"
             />
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted font-bold">Br</span>
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
                <Button type="button" variant="secondary" className="h-6 text-[10px] px-2 py-0 bg-gold/20 text-gold hover:bg-gold/30 border border-gold/30" onClick={() => setValue('amount', cashBalance.replace(/,/g, ''))}>MAX</Button>
             </div>

@@ -4,6 +4,7 @@ import { History as HistoryIcon,  Gamepad2, Gift, Zap, Wallet, ArrowUpRight, Arr
 import { Card, EmptyState, Skeleton, ErrorState, cn } from '../../shared/components';
 import { normalizeApiError } from '../../shared/lib/api-client';
 import { format, isToday, isYesterday } from 'date-fns';
+import { useLanguage } from '../../shared/lib/i18n';
 
 interface Transaction {
   id: string | number;
@@ -29,6 +30,7 @@ async function fetchHistory(): Promise<Transaction[]> {
 }
 
 export default function HistoryPage() {
+  const { t } = useLanguage();
   const { data: history, isLoading, error, refetch } = useQuery({
     queryKey: ['transactions'],
     queryFn: fetchHistory,
@@ -59,8 +61,8 @@ export default function HistoryPage() {
 
       <header className="relative z-10 flex justify-between items-end">
         <div>
-          <h1 className="text-2xl font-display font-medium text-ink mb-1">Activity Log</h1>
-          <p className="text-sm text-ink-muted">Track your wins, wagers, and payments.</p>
+          <h1 className="text-2xl font-display font-medium text-ink mb-1">{t('historyTitle')}</h1>
+          <p className="text-sm text-ink-muted">{t('historyDesc')}</p>
         </div>
         <div className="w-10 h-10 rounded-full bg-surface-raised flex items-center justify-center border border-ink/5">
           <HistoryIcon className="w-5 h-5 text-ink" />

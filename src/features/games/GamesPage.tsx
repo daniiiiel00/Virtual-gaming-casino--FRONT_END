@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Gamepad2, Play, Search, Filter } from 'lucide-react';
 import { Card, EmptyState, Skeleton, ErrorState, cn } from '../../shared/components';
 import { normalizeApiError } from '../../shared/lib/api-client';
+import { useLanguage } from '../../shared/lib/i18n';
 
 interface Game {
   id: string;
@@ -31,6 +32,7 @@ async function fetchGames(): Promise<Game[]> {
 const CATEGORIES = ['All', 'Crash', 'Instant', 'Table'];
 
 export default function GamesPage() {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
 
@@ -54,8 +56,8 @@ export default function GamesPage() {
       <div className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl border-b border-ink/5 pt-4 pb-2 px-4 space-y-4">
         <header className="flex justify-between items-end">
           <div>
-            <h1 className="text-2xl font-display font-medium text-ink mb-1">Casino</h1>
-            <p className="text-sm text-ink-muted">Play and win with top providers.</p>
+            <h1 className="text-2xl font-display font-medium text-ink mb-1">{t('gamesTitle')}</h1>
+            <p className="text-sm text-ink-muted">{t('gamesDesc')}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20 shadow-inner">
             <Gamepad2 className="w-5 h-5 text-gold" />

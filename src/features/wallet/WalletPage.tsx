@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Plus, ArrowDownToLine, Eye, EyeOff, Flame, Timer, Gift, ChevronRight, Play, Search, Filter } from 'lucide-react';
+import { Plus, ArrowDownToLine, Eye, EyeOff, Flame, Timer, Gift, ChevronRight, Play, Search, Filter, Sparkles, Gamepad2 } from 'lucide-react';
 import { Card, Button, Skeleton, ErrorState, LanguageSwitcher } from '../../shared/components';
 import { normalizeApiError } from '../../shared/lib/api-client';
 import { DepositModal } from '../deposit/DepositModal';
@@ -35,7 +35,7 @@ export default function WalletPage() {
   const { t } = useLanguage();
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isWithdrawalOpen, setIsWithdrawalOpen] = useState(false);
-  const [showBalance, setShowBalance] = useState(true);
+  const [showBalance, setShowBalance] = useState(false);
   
   // Fake Cashback Countdown Timer
   const [timeLeft, setTimeLeft] = useState({ h: 12, m: 45, s: 30 });
@@ -169,7 +169,13 @@ export default function WalletPage() {
         {/* --- MULTI HOT SLOTS --- */}
         <section>
           <div className="flex justify-between items-end mb-3 px-1">
-            <h3 className="text-lg font-display font-bold text-ink">{t('multiHotSlots')}</h3>
+            <div className="flex items-center gap-2">
+              <div className="relative w-5 h-5 flex justify-center items-center">
+                <Sparkles className="w-5 h-5 text-gold animate-pulse drop-shadow-[0_0_8px_rgba(232,169,59,0.8)] absolute" />
+                <Sparkles className="w-3 h-3 text-yellow-200 animate-[ping_2s_infinite] absolute opacity-70" />
+              </div>
+              <h3 className="text-lg font-display font-bold text-ink">{t('multiHotSlots')}</h3>
+            </div>
             <button className="text-xs font-bold text-ink-muted hover:text-gold flex items-center transition-colors">
               {t('more')} <ChevronRight className="w-3 h-3" />
             </button>
@@ -181,16 +187,22 @@ export default function WalletPage() {
           </div>
         </section>
 
-        {/* --- MORE GAMES (ULTRA WOW SECTION) --- */}
+        {/* --- MORE GAMES  --- */}
         <section className="mt-8 mb-8">
           <div className="flex items-center justify-between mb-4 px-1">
-            <div>
-              <h3 className="text-lg font-display font-bold text-ink drop-shadow-sm">{t('allGames')}</h3>
-              <p className="text-[10px] text-ink-muted uppercase tracking-widest font-bold mt-0.5">{t('exploreLibrary')}</p>
+            <div className="flex items-center gap-3">
+              <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(99,102,241,0.5)] overflow-hidden">
+                <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                <Gamepad2 className="w-4 h-4 text-white relative z-10 hover:animate-spin" />
+              </div>
+              <div>
+                <h3 className="text-lg font-display font-bold text-ink drop-shadow-sm">{t('allGames')}</h3>
+                <p className="text-[10px] text-ink-muted uppercase tracking-widest font-bold mt-0.5">{t('exploreLibrary')}</p>
+              </div>
             </div>
           </div>
 
-          {/* Search & Filter Actions (Ultra Wow Glassmorphic) */}
+          {/* Search & Filter Actions  */}
           <div className="flex gap-2 mb-6">
             <div className="flex-1 flex items-center bg-surface border border-white/5 rounded-2xl px-3 py-2.5 shadow-sm focus-within:border-gold/50 focus-within:shadow-[0_0_15px_rgba(232,169,59,0.2)] transition-all">
               <Search className="w-4 h-4 text-ink-muted mr-2 shrink-0" />
@@ -205,7 +217,7 @@ export default function WalletPage() {
             </button>
           </div>
 
-          {/* 2-Column Grid (Ultra Wow Cards) */}
+          {/* 2-Column Grid  */}
           <div className="grid grid-cols-2 gap-3">
             {MORE_GAMES.map(game => (
               <Card key={game.id} className="relative aspect-square overflow-hidden group rounded-2xl border-0 shadow-lg ring-1 ring-white/5">

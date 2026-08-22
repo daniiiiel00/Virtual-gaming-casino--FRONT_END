@@ -3,18 +3,20 @@ import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, Gamepad2, ChartColumnIncreasing, History, User } from 'lucide-react';
 import { cn } from '../../shared/components/Button';
 import { SplashScreen } from './SplashScreen';
+import ScrollToTop from '../../shared/components/ScrollToTop';
+import { useLanguage } from '../../shared/lib/i18n';
 
 const navItems = [
- 
-  { path: '/games', label: 'Games', icon: Gamepad2 },
-  { path: '/promotions', label: 'Leaderboard', icon: ChartColumnIncreasing },
-   { path: '/', label: 'Home', icon: Home },
-  { path: '/history', label: 'History', icon: History },
-  { path: '/profile', label: 'Profile', icon: User },
+  { path: '/games', labelKey: 'navGames', icon: Gamepad2 },
+  { path: '/promotions', labelKey: 'navLeaderboard', icon: ChartColumnIncreasing },
+  { path: '/', labelKey: 'navHome', icon: Home },
+  { path: '/history', labelKey: 'navHistory', icon: History },
+  { path: '/profile', labelKey: 'navProfile', icon: User },
 ];
 
 export function Shell() {
   const [showSplash, setShowSplash] = useState(true);
+  const { t } = useLanguage();
   const location = useLocation();
   
   // Initialize Telegram WebApp on mount
@@ -31,6 +33,7 @@ export function Shell() {
 
   return (
     <>
+      <ScrollToTop />
       {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
       <div className="flex flex-col h-[100dvh] w-full max-w-md mx-auto relative bg-background overflow-hidden shadow-2xl">
         {/* Header Signature Line */}
@@ -80,7 +83,7 @@ export function Shell() {
                     "absolute bottom-2 text-[10px] font-bold tracking-widest transition-all duration-500",
                     isActive ? "opacity-100 text-gold translate-y-0" : "opacity-0 translate-y-4"
                   )}>
-                    {item.label}
+                    {t(item.labelKey)}
                   </span>
                 </NavLink>
               );

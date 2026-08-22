@@ -53,7 +53,7 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
       return new Promise((resolve) => setTimeout(resolve, 1500));
     },
     onSuccess: () => {
-      toast.success('Deposit request sent to admin for approval! 🚀', { duration: 4000 });
+      toast.success('Deposit request sent to admin for approval!', { duration: 4000 });
       handleClose();
     },
     onError: (e: any) => {
@@ -122,11 +122,11 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
             <div className="relative">
               <Input 
                 type="number"
-                placeholder="0.00" 
+                placeholder="0.00 ETB" 
                 {...register('amount')} 
                 className="pl-6 text-xl font-display font-bold h-14"
               />
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted font-bold">Br</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted font-bold"></span>
             </div>
             {errors.amount && <p className="text-xs text-coral mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.amount.message}</p>}
           </div>

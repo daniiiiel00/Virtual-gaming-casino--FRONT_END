@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Trophy, Crown, Star, Medal, Clock, Swords, Ticket } from 'lucide-react';
 import { Button, Input, Card, cn } from '../../shared/components';
+import { useLanguage } from '../../shared/lib/i18n';
 
 // Mock Leaderboard Data
 const leaderboard = [
@@ -16,6 +17,7 @@ const leaderboard = [
 ];
 
 export default function PromotionsPage() {
+  const { t } = useLanguage();
   const top3 = [leaderboard[1], leaderboard[0], leaderboard[2]];
   const rest = leaderboard.slice(3);
 
@@ -88,7 +90,10 @@ export default function PromotionsPage() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-gold animate-pulse" />
-            <h2 className="text-lg font-display font-bold text-ink drop-shadow-sm">Global Rankings</h2>
+            <div>
+              <h2 className="text-lg font-display font-bold text-ink drop-shadow-sm">{t('leaderboardTitle')}</h2>
+              <p className="text-[10px] text-ink-muted mt-0.5">{t('leaderboardDesc')}</p>
+            </div>
           </div>
           <button className="bg-surface-raised border border-white/10 text-ink text-xs font-bold px-3 py-1.5 rounded-full shadow-sm hover:bg-white/5 transition-colors">
             Your Rank: 142
