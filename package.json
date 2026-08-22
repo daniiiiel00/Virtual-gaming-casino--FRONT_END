@@ -5,9 +5,10 @@
     "apps/*"
   ],
   "scripts": {
-    "dev:user": "npm run dev --workspace=@gaming-platform/user-app",
-    "build:user": "npm run build --workspace=@gaming-platform/user-app",
-    "build": "npm run build:user && cp -r apps/user-app/dist dist",
-    "lint": "npm run lint --workspaces"
+    "dev": "pnpm --filter @gaming-platform/user-app dev",
+    "dev:user": "pnpm --filter @gaming-platform/user-app dev",
+    "build:user": "pnpm --filter @gaming-platform/user-app build",
+    "build": "pnpm run build:user && cp -r apps/user-app/dist dist",
+    "lint": "pnpm -r lint"
   }
 }
